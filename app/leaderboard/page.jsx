@@ -1,29 +1,34 @@
+'use client'
+
 import React from 'react';
 import Table from '../../components/Table'
-const data=[
-    {
-        name:"Akshay Bhatnagar",
-        score:"200",
-    },
-    {
-        name:"ayush kumar",
-        score:100,
-    },
-    {
-        name:"Mohit Aswani",
-        score:400
-    },
-    {
-        name:"Tejas Taneja",
-        score:"350",
-    }
-];
-data.sort((a,b)=>a.score>b.score?-1:1);
+import { useEffect,useState } from 'react';
+import {supabase} from '../../supabaseClient'
+
 const page = () => {
+    const [products,setproducts]=useState([]);
+    useEffect(()=>{
+        getData();
+    },[]);
+    async function getData(){
+        try{
+            const {data,error}=await supabase
+            .from("session_data")
+            .select("*")
+            if(error) throw error;
+            if(data){
+                setproducts(data);
+            }
+        }
+        catch(err){
+            alert(err);
+        }
+    }
+    products.sort((a,b)=>a.highest_wpm>b.highest_wpm?-1:1);
   return (
     
     <div>
-        <Table data={data}></Table>
+        <Table data={products}></Table>
     </div>
   )
 }

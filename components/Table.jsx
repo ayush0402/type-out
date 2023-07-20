@@ -33,7 +33,7 @@ const Table = ({data}) => {
                  </th>
                  <td class="px-6 py-4">
                  {data.map((user) => (
-        <div className="user">{user.score}</div>
+        <div className="user">{user.highest_wpm}</div>
       ))}
                  </td>
                  
