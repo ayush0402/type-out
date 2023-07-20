@@ -7,7 +7,7 @@ const Table = ({data}) => {
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
-                    S. No.
+                    Rank
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Name
@@ -22,8 +22,8 @@ const Table = ({data}) => {
             
                  <tr class="mx-200 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
                  <td class="px-6 py-4">
-                 {data.map((user) => (
-        <div className="user">{user.rank}</div>
+                 {data.map((user,i) => (
+        <div className="user">{i+1}</div>
       ))}
                  </td>
                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
