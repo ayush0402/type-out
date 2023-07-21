@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import TypingCard from "@/components/TypingCard";
 import NavHeader from "./NavHeader";
-import axios from "axios";
 
 const HomePage = () => {
   const [currentSpeed, setCurrentSpeed] = useState(0);
@@ -16,9 +15,7 @@ const HomePage = () => {
       <div>
         <NavHeader currentSpeed={currentSpeed} />
         <div>
-          <TypingCard
-            homePageCallBack={homePageCallBack}
-          />
+          <TypingCard homePageCallBack={homePageCallBack} />
         </div>
       </div>
     </div>
