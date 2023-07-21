@@ -1,20 +1,26 @@
-import createClient from "@/utils/supabase-server";
+'use client'
+import React from 'react'
+import {io} from 'socket.io-client'
+import { useEffect } from 'react';
 
-const MultiPlayerPage = async () => {
-  const supabase = createClient();
-  const { data, error } = await supabase.auth.getUser();
-  console.log(data);
+const socket=io('http://localhost:5000')
+const page = () => {
+    useEffect(()=>{
+        socket.on('connect',()=>{
+          socket.on('welcome',(data)=>{
+            console.log(socket.id);
+          })
+          socket.emit('msg',"Thanks for connecting");
+        })
+        return ()=>{
+          socket.off('connect');
+        };
+      },[])
   return (
-    <>
-      <h1 className="text-foreground">Multiplayer</h1>
-      <div>
-        <h3 className="text-foreground">Create Room</h3>
-      </div>
-      <div>
-        <h3 className="text-foreground">Join Room</h3>
-      </div>
-    </>
-  );
-};
+    <div>
+      
+    </div>
+  )
+}
 
-export default MultiPlayerPage;
+export default page

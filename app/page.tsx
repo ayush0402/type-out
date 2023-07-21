@@ -4,12 +4,14 @@ import Link from "next/link";
 import LogoutButton from "../components/LogoutButton";
 import HomePage from "@/components/HomePage";
 
+
+
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
+ 
   return (
     <div className="w-full flex flex-col items-center">
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
