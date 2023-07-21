@@ -26,17 +26,7 @@ const Speed = (props) => {
           onClick={async () => {
             props.typingCardCallback(Math.round(wpm));
             const user = await supabase.auth.getUser();
-            // const res = await fetch(`/api/submitToDB`, {
-            //   method: "POST",
-            //   body: JSON.stringify({
-            //     user: user,
-            //     speed: Math.round(wpm),
-            //   }),
-            //   headers: new Headers({
-            //     "Content-Type": "application/json",
-            //     Accept: "application/json",
-            //   }),
-            // });
+
             if (user) {
               const { data, error } = await supabase
                 .from("individual_session_data")
