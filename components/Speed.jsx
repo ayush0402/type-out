@@ -2,9 +2,12 @@
 import { useRef, useEffect } from "react";
 import styled from "styled-components";
 import { headingAnimationColor, primaryColor } from "../constants/color";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { errors } from "./errors";
 
 const Speed = (props) => {
   const elementRef = useRef(0);
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
     if (props.countDown === 0 || props.isFinished) {
@@ -20,7 +23,39 @@ const Speed = (props) => {
       <Div isSpeed={wpm >= 50}>
         <h3
           ref={elementRef}
-          onClick={() => props.typingCardCallback(Math.round(wpm))}
+          onClick={async () => {
+            props.typingCardCallback(Math.round(wpm));
+            const user = await supabase.auth.getUser();
+            // const res = await fetch(`/api/submitToDB`, {
+            //   method: "POST",
+            //   body: JSON.stringify({
+            //     user: user,
+            //     speed: Math.round(wpm),
+            //   }),
+            //   headers: new Headers({
+            //     "Content-Type": "application/json",
+            //     Accept: "application/json",
+            //   }),
+            // });
+            if (user) {
+              const { data, error } = await supabase
+                .from("individual_session_data")
+                .insert({
+                  user_id: user.data.user.id,
+                  email: user.data.user.email,
+                  speed: Math.round(wpm),
+                  accuracy: 0,
+                })
+                .select("*")
+                .single();
+
+              if (error) {
+                errors.add(error.message);
+                throw error;
+              }
+              console.log("saved", data);
+            }
+          }}
         >
           {Math.round(wpm)} wpm
         </h3>
