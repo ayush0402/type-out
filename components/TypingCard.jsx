@@ -8,9 +8,12 @@ import {
   secondaryColor,
 } from "../constants/color";
 import Speed from "./Speed";
+import axios from "axios";
+
+const API_URL = "http://metaphorpsum.com/paragraphs/1/10";
 
 const initialState = {
-  text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium doloremque repellendus voluptates quis fugit ad corporis deleniti mollitia iusto quaerat quod libero, expedita quisquam exercitationem dicta aliquid obcaecati, facere nemo?",
+  text: "Loading...",
   userInput: "",
   symbols: 0,
   sec: 0,
@@ -21,6 +24,28 @@ const initialState = {
 
 class TypingCard extends Component {
   state = initialState;
+
+  componentDidMount() {
+    this.fetchInitialText();
+  }
+
+  fetchInitialText = () => {
+    axios
+      .get(API_URL)
+      .then((response) => {
+        const text = response.data; // Assuming the API response directly gives the text data
+        this.setState({
+          text,
+          loading: false, // Set loading to false once the data is fetched
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        this.setState({
+          loading: false, // Set loading to false even if there is an error
+        });
+      });
+  };
 
   onRestart = () => {
     this.setState(initialState);
