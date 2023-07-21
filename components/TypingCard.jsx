@@ -50,6 +50,7 @@ class TypingCard extends Component {
 
   onRestart = () => {
     this.setState(initialState);
+    this.fetchInitialText();
     clearInterval(this.interval);
   };
 
