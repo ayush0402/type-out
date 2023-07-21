@@ -2,7 +2,8 @@
 import React from 'react'
 import { useState } from 'react'
 import io from 'socket.io-client'
-
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { errors } from '@/components/errors';
 const socket=io('http://localhost:5000')
 const JoinGame = () => {
 
@@ -10,11 +11,25 @@ const JoinGame = () => {
     const onChange = e=>{
         setuserInput({...userInput,[e.target.name]:e.target.value});
     }
-
-    const onSubmit=e=>{
+    const supabase = createClientComponentClient();
+    const onSubmit=async (e)=>{
         e.preventDefault();
-        console.log(userInput);
-        socket.emit('join-game',userInput);
+        //console.log(userInput.gameID);
+        let ID=userInput.gameID.toString();
+        const {game,err}=await supabase
+            .from('Game_Lobbies')
+            .select('*')
+            .eq('id',ID);
+           // console.log(game);
+            if (err) {
+                errors.add(err.message);
+                throw err;
+              }
+            if(game===undefined){
+                alert("Game not found!!!");
+            }
+            else{
+        socket.emit('join-game',userInput);}
     }
   return (
     <div className="row">

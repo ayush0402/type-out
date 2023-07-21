@@ -2,19 +2,33 @@
 import React from 'react'
 import { useState } from 'react'
 import io from 'socket.io-client'
+import {useRouter} from 'next/navigation'
 import {uuid} from 'uuidv4';
 const socket=io('http://localhost:5000')
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const CreateGame = () => {
 
     const [nickName,setNickname]=useState("");
+    const supabase = createClientComponentClient();
     const onChange = e=>{
         setNickname(e.target.value);
     }
-
-    const onSubmit=e=>{
+    const router=useRouter();
+    const onSubmit= async (e)=>{
         e.preventDefault();
+        let unique_id=uuid();
+        
+        const {data,error} = await supabase
+        .from('Game_Lobbies')
+        .insert({
+            id: unique_id,
+            isOpen: true,
+    })
+    .select("*")
+    .single();
         socket.emit('create-game',nickName);
+        router.push(`/multiplayer/${unique_id}`);
     }
   return (
     <div className="row">

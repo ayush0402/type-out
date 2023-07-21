@@ -1,6 +1,9 @@
+
 import { Server } from "socket.io";
 import { createServer } from "http";
+
 const httpServer=createServer()
+
 const io=new Server(httpServer,{
     cors:{
         origin:'*'
@@ -11,9 +14,9 @@ io.on('connection',(socket)=>{
     socket.emit('welcome',"welcome to the channel");
     socket.on('join-game',async ({gameID: _id,nickName})=>{
         try{
-            //use supabase to check if 
-            //room exist 
-            if(game.isOpen){
+            
+            
+            
                 const gameID=game._id.toString();
                 socket.join(gameID);
                 let player ={
@@ -25,7 +28,7 @@ io.on('connection',(socket)=>{
 
                 io.to(gameID).emit('updateGame',game);
             }
-        }
+
         catch(err){
             console.log(err);
         }
