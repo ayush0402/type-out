@@ -1,36 +1,83 @@
-'use client'
+"use client";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { errors } from "@/components/errors";
+import { useState } from "react";
+import { useEffect } from "react";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+  Container,
+} from "@mui/material";
 
-import React from 'react';
-import Table from '../../components/Table'
-import { useEffect,useState } from 'react';
-import {supabase} from '../../supabaseClient'
+const formattedTime = (rawTime) => {
+  const date = new Date(rawTime);
+  return date.toLocaleString();
+};
 
-const page = () => {
-    const [products,setproducts]=useState([]);
-    useEffect(()=>{
-        getData();
-    },[]);
-    async function getData(){
-        try{
-            const {data,error}=await supabase
-            .from("session_data")
-            .select("*")
-            if(error) throw error;
-            if(data){
-                setproducts(data);
-            }
+const Leaderboard = () => {
+  const [data, setData] = useState([]);
+
+  const supabase = createClientComponentClient();
+
+  useEffect(async () => {
+    const fetchData = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("individual_session_data")
+          .select("*");
+        if (error) {
+          errors.add(error.message);
+          throw error;
         }
-        catch(err){
-            alert(err);
-        }
-    }
-    products.sort((a,b)=>a.highest_wpm>b.highest_wpm?-1:1);
+        const sortedData = data.sort((a, b) => b.speed - a.speed);
+        setData(sortedData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
-    
-    <div>
-        <Table data={products}></Table>
-    </div>
-  )
-}
+    <>
+      <Container>
+        <h1 className="text-foreground text-xl mt-10">Leaderboard</h1>
+        <h1 className="text-foreground text-lg">Global ranking based on wpm</h1>
+        <TableContainer className="mt-20" component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Time</TableCell>
+                <TableCell>Player</TableCell>
+                <TableCell align="right">Speed</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {formattedTime(row.created_at)}
+                  </TableCell>
+                  <TableCell align="centre">
+                    {row.email.split("@")[0]}
+                  </TableCell>
+                  <TableCell align="right">{row.speed}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+    </>
+  );
+};
 
-export default page
+export default Leaderboard;
