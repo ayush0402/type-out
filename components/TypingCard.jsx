@@ -11,7 +11,7 @@ import Speed from "./Speed";
 import axios from "axios";
 import { useState } from "react";
 import { Switch, FormControlLabel,Box,Slider } from "@mui/material";
-
+import Accuracy from './Accuracy'
 const API_URL = "http://metaphorpsum.com/paragraphs/1/10";
 
 const initialState = {
@@ -23,6 +23,7 @@ const initialState = {
   finished: false,
   countDown: 60,
   value:0,
+  total:0
 };
 
 class TypingCard extends Component {
@@ -62,7 +63,12 @@ class TypingCard extends Component {
     this.setState({
       userInput: value,
       symbols: this.countCorrectSymbols(value),
+      
     });
+    this.setState((prevProps)=>{
+     return{ total:prevProps.total+1,}
+    });
+    //console.log(this.state.symbols+" "+this.state.total);
   };
 
   onFinished = (userInput) => {
@@ -78,9 +84,8 @@ class TypingCard extends Component {
   };
 
   countCorrectSymbols = (userInput) => {
-    const text = this.state.text.replace(" ", "");
+    const text = this.state.text;
     return userInput
-      .replace(" ", "")
       .split("")
       .filter((data, i) => data === text[i]).length;
   };
@@ -148,11 +153,20 @@ class TypingCard extends Component {
           <Content>
             <Speed
               countDown={this.state.countDown}
-              typingCardCallback={(speed) => this.props.homePageCallBack(speed)}
+              typingCardCallback={(accuracy) => this.props.homePageCallBack(accuracy)}
               sec={this.state.sec}
               symbols={this.state.symbols}
               isFinished={this.state.finished}
+              total={this.state.total}
             />
+            <Accuracy
+              countDown={this.state.countDown}
+              //typingCardCallback={(accuracy) => this.props.homePageCallBack(accuracy)}
+              sec={this.state.sec}
+              symbols={this.state.symbols}
+              isFinished={this.state.finished}
+              total={this.state.total}
+              />
             <Button onClick={this.onRestart}> Restart </Button>
           </Content>
         </div>
