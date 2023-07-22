@@ -9,6 +9,8 @@ import {
 } from "../constants/color";
 import Speed from "./Speed";
 import axios from "axios";
+import { useState } from "react";
+import { Switch, FormControlLabel } from "@mui/material";
 
 const API_URL = "http://metaphorpsum.com/paragraphs/1/10";
 
@@ -24,7 +26,6 @@ const initialState = {
 
 class TypingCard extends Component {
   state = initialState;
-
   componentDidMount() {
     this.fetchInitialText();
   }
@@ -104,6 +105,19 @@ class TypingCard extends Component {
     };
     return (
       <CardContainer>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={this.state.countDown === 30}
+              onChange={(event) =>
+                this.setState({
+                  countDown: event.target.checked ? 30 : 60,
+                })
+              }
+            />
+          }
+          label={this.state.countDown === 30 ? "30s" : "60s"}
+        />
         <div className="inner">
           <CountDown
             isStated={this.state.started}

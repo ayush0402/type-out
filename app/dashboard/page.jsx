@@ -16,7 +16,6 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import Link from "next/link";
 
 const formattedTime = (rawTime) => {
   const date = new Date(rawTime);
@@ -49,7 +48,12 @@ const Dashboard = () => {
         const filteredData = data.filter(
           (item) => item.user_id === user.user.id
         );
-        setData(filteredData);
+
+        filteredData.sort(
+          (a, b) => new Date(a.created_at) - new Date(b.created_at)
+        );
+
+        setData(filteredData.reverse());
 
         // Calculate average and top speed
         if (filteredData.length > 0) {
