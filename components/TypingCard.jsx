@@ -30,7 +30,6 @@ class TypingCard extends Component {
   }
 
   fetchInitialText = () => {
-    
     axios
       .get(API_URL)
       .then((response) => {
@@ -72,6 +71,7 @@ class TypingCard extends Component {
     ) {
       clearInterval(this.interval);
       this.setState({ finished: true });
+      alert("Game Over!");
     }
   };
 
@@ -104,7 +104,6 @@ class TypingCard extends Component {
     };
     return (
       <CardContainer>
-        
         <div className="inner">
           <CountDown
             isStated={this.state.started}
@@ -118,9 +117,9 @@ class TypingCard extends Component {
             onChange={this.onUserInputChange}
             placeholder="Start typing....."
             readOnly={this.state.finished}
-            onCopy={e => preventCopyPaste(e)}
-            onCut={e => preventCopyPaste(e)}
-            onPaste={e => preventCopyPaste(e)}
+            onCopy={(e) => preventCopyPaste(e)}
+            onCut={(e) => preventCopyPaste(e)}
+            onPaste={(e) => preventCopyPaste(e)}
           />
 
           <Content>
@@ -130,7 +129,6 @@ class TypingCard extends Component {
               sec={this.state.sec}
               symbols={this.state.symbols}
               isFinished={this.state.finished}
-             
             />
 
             <Button onClick={this.onRestart}> Restart </Button>
