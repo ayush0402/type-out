@@ -26,7 +26,8 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   const [avgSpeed, setAvgSpeed] = useState(0);
   const [topSpeed, setTopSpeed] = useState(0);
-
+  const [avgaccuracy,setAvgAccuray] =useState(0);
+  const [topAccuracy,setTopAccuracy]=useState(0);
   const supabase = createClientComponentClient();
 
   useEffect(async () => {
@@ -59,17 +60,28 @@ const Dashboard = () => {
         if (filteredData.length > 0) {
           let sumSpeed = 0;
           let maxSpeed = filteredData[0].speed;
+          let maxAccuracy=filteredData[0].accuracy;
+          let avgaccuracy=0;
           for (const item of filteredData) {
             sumSpeed += item.speed;
+            avgaccuracy+=item.accuracy;
             if (item.speed > maxSpeed) {
               maxSpeed = item.speed;
+              
+            }
+            if(item.accuracy>maxAccuracy){
+              maxAccuracy=item.accuracy;
             }
           }
           setAvgSpeed((sumSpeed / filteredData.length).toFixed(2));
+          setAvgAccuray((avgaccuracy / filteredData.length).toFixed(2));
+          setTopAccuracy(maxAccuracy);
           setTopSpeed(maxSpeed);
         } else {
           setAvgSpeed(0);
           setTopSpeed(0);
+          setAvgAccuray(0);
+          setTopAccuracy(0);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -135,6 +147,40 @@ const Dashboard = () => {
               </Typography>
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
                 wpm
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card sx={{ maxWidth: 275, minWidth: 275 }}>
+            <CardContent>
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Average Accuracy
+              </Typography>
+              <Typography variant="h5" component="div">
+                {avgaccuracy}
+              </Typography>
+              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                %
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card sx={{ maxWidth: 275, minWidth: 275 }}>
+            <CardContent>
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Top Accuracy
+              </Typography>
+              <Typography variant="h5" component="div">
+                {topAccuracy}
+              </Typography>
+              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                %
               </Typography>
             </CardContent>
           </Card>

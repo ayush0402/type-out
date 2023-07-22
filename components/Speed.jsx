@@ -15,7 +15,12 @@ const Speed = (props) => {
       elementRef.current.click();
     }
   });
-
+  let accuracy=100;
+  if(props.total>0)
+  {
+    accuracy=((props.symbols)/(props.total))*100;
+    accuracy=accuracy.toPrecision(2);
+  }
   if (props.symbols !== 0 && props.sec !== 0) {
     const wpm = props.symbols / 5 / (props.sec / 60);
 
@@ -34,7 +39,7 @@ const Speed = (props) => {
                   user_id: user.data.user.id,
                   email: user.data.user.email,
                   speed: Math.round(wpm),
-                  accuracy: 0,
+                  accuracy: accuracy,
                 })
                 .select("*")
                 .single();
