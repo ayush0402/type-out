@@ -10,7 +10,7 @@ import {
 import Speed from "./Speed";
 import axios from "axios";
 import { useState } from "react";
-import { Switch, FormControlLabel } from "@mui/material";
+import { Switch, FormControlLabel,Box,Slider } from "@mui/material";
 
 const API_URL = "http://metaphorpsum.com/paragraphs/1/10";
 
@@ -22,6 +22,7 @@ const initialState = {
   started: false,
   finished: false,
   countDown: 60,
+  value:0,
 };
 
 class TypingCard extends Component {
@@ -94,7 +95,12 @@ class TypingCard extends Component {
       }, 1000);
     }
   };
-
+  OnhandleSliderChange = (event) => {
+    const value=event.target.value;
+      return this.setState({
+        countDown:value,
+      })
+    };
   render() {
     if (this.state.countDown === 0) {
       clearInterval(this.interval);
@@ -103,21 +109,24 @@ class TypingCard extends Component {
       e.preventDefault();
       alert("Copying and pasting is not allowed!");
     };
+   
+  //const [value, setValue] = useState(15);
+
+  
     return (
       <CardContainer>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={this.state.countDown === 30}
-              onChange={(event) =>
-                this.setState({
-                  countDown: event.target.checked ? 30 : 60,
-                })
-              }
-            />
-          }
-          label={this.state.countDown === 30 ? "30s" : "60s"}
+        
+      <input
+          type="range"
+          id="slider"
+          name="slider"
+          min="15"
+          max="120"
+          step="15"
+          value={this.state.countDown}
+          onChange={this.OnhandleSliderChange}
         />
+    
         <div className="inner">
           <CountDown
             isStated={this.state.started}
