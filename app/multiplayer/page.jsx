@@ -1,21 +1,31 @@
 'use client'
 import React from 'react'
 import {io} from 'socket.io-client'
-import { useEffect } from 'react';
-
+import { useEffect ,useState} from 'react';
+import CreateGame from './create/page'
+//import {createBrowserHistory} from 'History';
+//const history =createBrowserHistory();
 const socket=io('http://localhost:5000')
 const page = () => {
+
+    const [gameState,setGameState] = useState({_id:"",isOpen:false,players:[],words:[]});
     useEffect(()=>{
-        socket.on('connect',()=>{
-          socket.on('welcome',(data)=>{
-            console.log(socket.id);
-          })
+        socket.on('updateGame',(game)=>{
+          
+            console.log(game);
+            setGameState(game);
+           // 
           socket.emit('msg',"Thanks for connecting");
         })
         return ()=>{
-          socket.off('connect');
-        };
-      },[])
+          socket.removeAllListeners();
+        }
+      },[]);
+      useEffect(()=>{
+        if(gameState._id!=""){
+          //history.push(`/game/${game._id}`);
+        }
+      },[gameState._id]);
   return (
     <div>
       

@@ -16,6 +16,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import Link from "next/link";
 
 const formattedTime = (rawTime) => {
   const date = new Date(rawTime);
@@ -60,7 +61,7 @@ const Dashboard = () => {
               maxSpeed = item.speed;
             }
           }
-          setAvgSpeed(sumSpeed / filteredData.length);
+          setAvgSpeed((sumSpeed / filteredData.length).toFixed(2));
           setTopSpeed(maxSpeed);
         } else {
           setAvgSpeed(0);
@@ -75,7 +76,27 @@ const Dashboard = () => {
 
   return (
     <>
-      <Container>
+      <Link
+        href="/"
+        className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
+        >
+          <polyline points="15 18 9 12 15 6" />
+        </svg>{" "}
+        Back
+      </Link>
+      <Container className="mt-20">
         <h1 className="text-foreground text-xl mt-10">Dashboard</h1>
         <div className="mt-20" style={{ display: "flex", gap: "20px" }}>
           <Card sx={{ maxWidth: 275, minWidth: 275 }}>
