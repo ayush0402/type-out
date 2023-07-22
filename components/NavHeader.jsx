@@ -41,8 +41,6 @@ const NavHeader = ({ currentSpeed }) => {
             {currentSpeed >= highestSpeed ? currentSpeed : highestSpeed} wpm{" "}
           </span>{" "}
         </h2>
-
-        {isTrue ? <Animation></Animation> : null}
       </HighestSpeedContainer>
     </MainDiv>
   );
@@ -70,38 +68,6 @@ const HighestSpeedContainer = styled.div`
   }
   z-index: 20;
   position: relative;
-`;
-
-const moveAndResize = keyframes`
-  from{
-    width: 10px;
-    height: 10px;
-    right: -10%;
-    top: -50%;
-    opacity: 0;
-  }
-  to{
-    width: 400px;
-    height: 350px;
-    right: -10%;
-    top: -50%;
-    opacity: 1;
-  }
-`;
-
-const Animation = styled.div`
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  background-color: #fff;
-  position: absolute;
-  top: 0%;
-  transform: translateY(-55%);
-  animation-name: ${moveAndResize};
-  animation-iteration-count: 2;
-  animation-duration: 1s;
-  animation-fill-mode: forwards;
-  z-index: -1;
 `;
 
 const Logo = styled.div`

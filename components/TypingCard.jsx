@@ -130,7 +130,6 @@ class TypingCard extends Component {
               symbols={this.state.symbols}
               isFinished={this.state.finished}
             />
-
             <Button onClick={this.onRestart}> Restart </Button>
           </Content>
         </div>

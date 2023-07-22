@@ -76,7 +76,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Link
+      <a
         href="/"
         className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
       >
@@ -95,7 +95,7 @@ const Dashboard = () => {
           <polyline points="15 18 9 12 15 6" />
         </svg>{" "}
         Back
-      </Link>
+      </a>
       <Container className="mt-20">
         <h1 className="text-foreground text-xl mt-10">Dashboard</h1>
         <div className="mt-20" style={{ display: "flex", gap: "20px" }}>
